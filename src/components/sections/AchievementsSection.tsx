@@ -36,8 +36,16 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ ach, i }) => {
       transition={{ duration: 0.4, delay: i * 0.1 }}
       className="bg-white rounded-3xl border border-black/15 p-6 shadow-xl flex flex-col justify-between gap-5 relative overflow-hidden group hover:border-[#EAB308] transition-all"
     >
+      {/* Header with Badge & Trophy Icon */}
+      <div className="flex items-center justify-between border-b border-black/10 pb-3">
+        <span className="text-[10px] font-mono font-black uppercase tracking-widest px-3 py-1 rounded-full bg-[#FFE600] text-black border border-black/20">
+          {ach.badge || '🏆 AWARD WINNER'}
+        </span>
+        <Trophy size={20} className="text-[#EAB308] shrink-0" />
+      </div>
+
       {/* Photo Banner/Carousel if available */}
-      {photos.length > 0 ? (
+      {photos.length > 0 && (
         <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-black/10 bg-[#F4F4F6] flex items-center justify-center">
           {/* Active Image */}
           <img
@@ -45,13 +53,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ ach, i }) => {
             alt={ach.title}
             className="max-w-full max-h-full object-contain group-hover:scale-[1.02] transition duration-500"
           />
-
-          {/* Badge */}
-          <div className="absolute top-3 left-3 right-3 z-10 pointer-events-none">
-            <span className="inline-block font-mono text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg bg-[#FFE600] text-black border border-black/20 shadow-md max-w-full break-words">
-              {ach.badge || '🏆 AWARD WINNER'}
-            </span>
-          </div>
 
           {/* Carousel Navigation Buttons */}
           {photos.length > 1 && (
@@ -85,13 +86,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ ach, i }) => {
               </div>
             </>
           )}
-        </div>
-      ) : (
-        <div className="flex items-center justify-between border-b border-black/10 pb-3">
-          <span className="text-[10px] font-mono font-black uppercase tracking-widest px-3 py-1 rounded-full bg-[#FFE600] text-black border border-black/20">
-            {ach.badge || '🏆 AWARD WINNER'}
-          </span>
-          <Trophy size={20} className="text-[#EAB308]" />
         </div>
       )}
 
