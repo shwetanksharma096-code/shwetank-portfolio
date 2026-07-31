@@ -84,7 +84,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-5 text-xs sm:text-base font-medium text-[#111111]/85 max-w-3xl leading-relaxed"
         >
-          Client servicing and account management professional with 4+ years of experience leading integrated marketing campaigns for various brands. Skilled at managing client relationships, campaign executions and finances, and cross-functional teams, with a track record of award-winning creative execution. Comfortable using modern AI tools to plan faster and sharper.
+          {(data as any).hero?.subParagraph || "Client servicing and account management professional with 4+ years of experience leading integrated marketing campaigns for various brands. Skilled at managing client relationships, campaign executions and finances, and cross-functional teams, with a track record of award-winning creative execution. Comfortable using modern AI tools to plan faster and sharper."}
         </motion.p>
 
         {/* Action Buttons using Creepy Eye Tracking Button */}

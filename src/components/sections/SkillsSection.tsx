@@ -5,9 +5,11 @@ import { defaultData } from '../../lib/store';
 interface SkillsSectionProps {
   skills: typeof defaultData.skills;
   theme?: 'light' | 'dark';
+  languages?: string;
+  location?: string;
 }
 
-export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
+export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, languages, location }) => {
   return (
     <section id="skills" className="w-full bg-[#FFFFFF] text-[#111111] py-16 px-4 sm:px-8 md:px-12 font-sans border-b border-black/10">
       <div className="max-w-7xl mx-auto flex flex-col gap-12">
@@ -51,8 +53,8 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
             </div>
 
             <div className="border-t border-black/10 pt-4 text-[10px] uppercase font-mono font-bold text-black/60 flex justify-between flex-wrap gap-2">
-              <span>LANGUAGES: HINDI • ENGLISH • MARATHI</span>
-              <span>MUMBAI, INDIA</span>
+              <span>{languages || "LANGUAGES: HINDI • ENGLISH • MARATHI"}</span>
+              <span>{location || "MUMBAI, INDIA"}</span>
             </div>
           </motion.div>
         </div>

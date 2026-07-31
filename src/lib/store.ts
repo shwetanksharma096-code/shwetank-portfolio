@@ -6,6 +6,7 @@ export const defaultData = {
     headlineHighlight: 'DRIVING IMPACT',
     headlineHighlightColor: '#EAB308',
     headlinePart2: 'FOR TOP BRAND ACCOUNTS.',
+    subParagraph: 'Client servicing and account management professional with 4+ years of experience leading integrated marketing campaigns for various brands. Skilled at managing client relationships, campaign executions and finances, and cross-functional teams, with a track record of award-winning creative execution. Comfortable using modern AI tools to plan faster and sharper.',
   },
   heroStats: {
     stat1Value: '4+ YRS',
@@ -207,7 +208,9 @@ export const defaultData = {
     web3formsAccessKey: '',
     footerHeading: "LET'S WORK TOGETHER",
     footerBio: 'Client servicing and account management professional with 4+ years of experience leading integrated marketing campaigns for various brands.',
-    locationAddress: 'Kalyan, Mumbai Metropolitan Region, Maharashtra – 421301, India',
+    locationAddress: 'Kalyan, Mumbai, MH - 421301',
+    languages: 'LANGUAGES: HINDI • ENGLISH • MARATHI',
+    skillsLocation: 'MUMBAI, INDIA',
     sectionOrder: ['stats', 'about', 'campaigns', 'achievements', 'experience', 'skills', 'services', 'reviews'],
   },
   brandLogos: [

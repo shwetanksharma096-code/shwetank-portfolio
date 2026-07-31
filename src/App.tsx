@@ -219,7 +219,12 @@ function MainApp() {
         ) : null}
 
         {data.skills && data.skills.length > 0 ? (
-          <SkillsSection skills={data.skills} theme="dark" />
+          <SkillsSection 
+            skills={data.skills} 
+            theme="dark" 
+            languages={(data.settings as any)?.languages}
+            location={(data.settings as any)?.skillsLocation}
+          />
         ) : null}
 
         <FooterSection data={data} />

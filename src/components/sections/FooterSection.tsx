@@ -28,7 +28,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ data }) => {
             </span>
             <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider bg-black/10 px-3 py-1 rounded-full border border-black/20">
               <MapPin size={14} className="text-black" />
-              <span>Kalyan, Mumbai, MH - 421301</span>
+              <span>{data.settings?.locationAddress || "Kalyan, Mumbai, MH - 421301"}</span>
             </div>
           </div>
 

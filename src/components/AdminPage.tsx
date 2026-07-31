@@ -346,6 +346,16 @@ const HeroSettings: React.FC<{ data: typeof defaultData; save: (s: string, v: an
             onChange={e => setVal('headlinePart2', e.target.value.toUpperCase())}
           />
         </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Hero Description Sub-paragraph</label>
+          <textarea
+            className="bg-white border border-black/10 rounded-lg px-3 py-2.5 text-sm text-[#111111] w-full h-24 font-medium"
+            value={form.subParagraph || ''}
+            onChange={e => setVal('subParagraph', e.target.value)}
+            placeholder="Introduce your experience, key skills, and tools..."
+          />
+        </div>
       </div>
 
       {/* Legacy Social Links that were in HeroStats */}
@@ -1111,14 +1121,22 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
   const [form, setForm] = useState({ 
     web3formsAccessKey: (data.settings as any)?.web3formsAccessKey || '',
     footerHeading: (data.settings as any)?.footerHeading || "Let's work together",
-    footerBio: (data.settings as any)?.footerBio || "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions."
+    footerBio: (data.settings as any)?.footerBio || "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.",
+    whatsappPhone: (data.settings as any)?.whatsappPhone || '8898134096',
+    locationAddress: (data.settings as any)?.locationAddress || 'Kalyan, Mumbai, MH - 421301',
+    languages: (data.settings as any)?.languages || 'LANGUAGES: HINDI • ENGLISH • MARATHI',
+    skillsLocation: (data.settings as any)?.skillsLocation || 'MUMBAI, INDIA'
   });
 
   useEffect(() => {
     setForm({ 
       web3formsAccessKey: (data.settings as any)?.web3formsAccessKey || '',
       footerHeading: (data.settings as any)?.footerHeading || "Let's work together",
-      footerBio: (data.settings as any)?.footerBio || "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions."
+      footerBio: (data.settings as any)?.footerBio || "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.",
+      whatsappPhone: (data.settings as any)?.whatsappPhone || '8898134096',
+      locationAddress: (data.settings as any)?.locationAddress || 'Kalyan, Mumbai, MH - 421301',
+      languages: (data.settings as any)?.languages || 'LANGUAGES: HINDI • ENGLISH • MARATHI',
+      skillsLocation: (data.settings as any)?.skillsLocation || 'MUMBAI, INDIA'
     });
   }, [data.settings]);
 
@@ -1128,6 +1146,17 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
     <div>
       <h2 className="text-2xl font-bold mb-6">Global Settings</h2>
       <div className="flex flex-col gap-5 bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6">
+        
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Web3Forms Access Key (Contact Email Form API Key)</label>
+          <input
+            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+            value={form.web3formsAccessKey}
+            onChange={e => setVal('web3formsAccessKey', e.target.value)}
+            placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          />
+        </div>
+
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Footer CTA Heading</label>
           <input
@@ -1147,6 +1176,46 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
             placeholder="Short bio/text for the footer"
           />
           <p className="text-[10px] text-[#111111]/40 mt-0.5">This text appears at the very bottom of the website above the email/whatsapp buttons.</p>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">WhatsApp Phone Number</label>
+          <input
+            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+            value={form.whatsappPhone}
+            onChange={e => setVal('whatsappPhone', e.target.value)}
+            placeholder="e.g. 8898134096"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Location Address (Footer Card)</label>
+          <input
+            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+            value={form.locationAddress}
+            onChange={e => setVal('locationAddress', e.target.value)}
+            placeholder="e.g. Kalyan, Mumbai, MH - 421301"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Skills Card Languages</label>
+          <input
+            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+            value={form.languages}
+            onChange={e => setVal('languages', e.target.value)}
+            placeholder="e.g. LANGUAGES: HINDI • ENGLISH • MARATHI"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Skills Card Location</label>
+          <input
+            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+            value={form.skillsLocation}
+            onChange={e => setVal('skillsLocation', e.target.value)}
+            placeholder="e.g. MUMBAI, INDIA"
+          />
         </div>
 
         <button onClick={() => save('settings', form)} className="bg-[#FFE600] px-6 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-yellow-300 transition w-fit mt-2 shadow-lg shadow-black/10">
