@@ -47,8 +47,8 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ ach, i }) => {
           />
 
           {/* Badge */}
-          <div className="absolute top-3 left-3 z-10">
-            <span className="text-[10px] font-mono font-black uppercase tracking-widest px-3 py-1 rounded-full bg-[#FFE600] text-black border border-black/20 shadow-md">
+          <div className="absolute top-3 left-3 right-3 z-10 pointer-events-none">
+            <span className="inline-block font-mono text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg bg-[#FFE600] text-black border border-black/20 shadow-md max-w-full break-words">
               {ach.badge || '🏆 AWARD WINNER'}
             </span>
           </div>
