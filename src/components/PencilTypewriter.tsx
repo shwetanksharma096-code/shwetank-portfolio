@@ -17,12 +17,14 @@ export const PencilTypewriter: React.FC<PencilTypewriterProps> = ({
   const [isStarted, setIsStarted] = useState(false);
 
   useEffect(() => {
+    setDisplayedText('');
+    setIsStarted(false);
     const timer = setTimeout(() => {
       setIsStarted(true);
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [text, delay]);
 
   useEffect(() => {
     if (!isStarted) return;
@@ -36,7 +38,7 @@ export const PencilTypewriter: React.FC<PencilTypewriterProps> = ({
   }, [displayedText, isStarted, text, speed]);
 
   return (
-    <span className={`inline-flex items-center font-handwriting ${className}`}>
+    <span className={`inline-flex items-center font-handwriting ${className}`} aria-live="polite">
       <span>{displayedText}</span>
       {displayedText.length < text.length && (
         <span className="inline-block w-2 h-4 bg-[#EAB308] ml-0.5 animate-pulse rounded-sm" />

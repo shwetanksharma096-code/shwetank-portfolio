@@ -10,15 +10,19 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    let innerTimer: ReturnType<typeof setTimeout>;
     const timer = setTimeout(() => {
       setPhase('fade');
-      setTimeout(() => {
+      innerTimer = setTimeout(() => {
         setVisible(false);
         onComplete();
       }, 350);
     }, 900);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (innerTimer) clearTimeout(innerTimer);
+    };
   }, [onComplete]);
 
   return (

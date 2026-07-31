@@ -250,27 +250,6 @@ export const defaultData = {
   ],
 };
 
-/* ─── Auth ───────────────────────────────────────────────────────── */
-const ADMIN_EMAIL    = 'shwetank.sharma096@gmail.com';
-const ADMIN_PASSWORD = 'Shwetank@123';
-const AUTH_KEY       = 'shwetank_admin_auth';
-
-export function login(email: string, password: string): boolean {
-  if (email.trim().toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-    if (typeof window !== 'undefined') sessionStorage.setItem(AUTH_KEY, '1');
-    return true;
-  }
-  return false;
-}
-
-export function logout(): void {
-  if (typeof window !== 'undefined') sessionStorage.removeItem(AUTH_KEY);
-}
-
-export function isLoggedIn(): boolean {
-  if (typeof window === 'undefined') return false;
-  return sessionStorage.getItem(AUTH_KEY) === '1';
-}
 
 const KEY = 'shwetank_portfolio_v1';
 

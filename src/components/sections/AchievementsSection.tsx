@@ -102,8 +102,8 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ ach, i }) => {
         {/* Hashtags */}
         {ach.hashtags && ach.hashtags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {ach.hashtags.map((tag: string, idx: number) => (
-              <span key={idx} className="text-[10px] font-mono font-bold text-[#0A66C2] bg-[#0A66C2]/10 px-2 py-0.5 rounded">
+            {ach.hashtags.map((tag: string) => (
+              <span key={tag} className="text-[10px] font-mono font-bold text-[#0A66C2] bg-[#0A66C2]/10 px-2 py-0.5 rounded">
                 #{tag}
               </span>
             ))}
@@ -146,7 +146,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({ achiev
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-black/10 pb-6">
           <div>
             <span className="font-mono text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full bg-[#FFE600] text-black">
-              004. ACHIEVEMENTS & AWARDS
+              003. ACHIEVEMENTS &amp; AWARDS
             </span>
             <div className="flex flex-col gap-2 mt-3">
               <h2 className="font-extrabold text-4xl sm:text-7xl uppercase tracking-tight text-black leading-none break-words">

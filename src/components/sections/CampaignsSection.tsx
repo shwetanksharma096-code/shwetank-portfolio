@@ -3,9 +3,6 @@ import { ArrowUpRight } from 'lucide-react';
 import { CircularGallery } from '../CircularGallery';
 import { InfiniteMarquee } from '../InfiniteMarquee';
 
-
-
-
 interface Creator {
   creator: string;
   profile: string;
@@ -34,7 +31,6 @@ interface CampaignsSectionProps {
   campaigns: CampaignsData;
   brandLogos?: BrandLogo[];
   onSelectVideo?: (video: any) => void;
-  theme?: 'light' | 'dark';
 }
 
 function extractInstagramHandle(url: string | undefined): string {
@@ -71,7 +67,7 @@ export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, b
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-black/10 pb-6">
           <div>
             <span className="font-mono text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-[#FFE600] text-black">
-              003. CAMPAIGNS & BRAND ACCOUNTS
+              002. CAMPAIGNS &amp; BRAND ACCOUNTS
             </span>
             <div className="flex items-baseline gap-3 mt-3">
               <h2 className="font-extrabold text-4xl sm:text-7xl uppercase tracking-tight text-black leading-none break-words">

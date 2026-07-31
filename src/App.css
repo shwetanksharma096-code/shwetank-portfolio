@@ -253,7 +253,7 @@ html {
 
 /* ─── MARQUEE PERFORMANCE ─── */
 .marquee-track {
-  will-change: scroll-position;
+  will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }

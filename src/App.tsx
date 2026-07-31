@@ -95,9 +95,6 @@ function MainApp() {
   }, []);
 
 
-
-
-
   // Lock body scroll when lightbox is open
   useEffect(() => {
     if (lightbox) {
@@ -200,7 +197,7 @@ function MainApp() {
         <HeroSection data={data} />
 
         {data.about?.bio || data.about?.photoUrl ? (
-          <AboutSection data={data} theme="light" />
+          <AboutSection data={data} />
         ) : null}
 
         {campaigns.brands && campaigns.brands.length > 0 ? (
@@ -208,20 +205,18 @@ function MainApp() {
             campaigns={campaigns}
             brandLogos={(data as any).brandLogos || []}
             onSelectVideo={handleSelectVideo}
-            theme="dark"
           />
         ) : null}
 
         <AchievementsSection achievements={(data as any).achievements || []} />
 
         {data.experience && data.experience.length > 0 ? (
-          <ExperienceSection experience={data.experience} theme="light" />
+          <ExperienceSection experience={data.experience} />
         ) : null}
 
         {data.skills && data.skills.length > 0 ? (
           <SkillsSection 
-            skills={data.skills} 
-            theme="dark" 
+            skills={data.skills}
             languages={(data.settings as any)?.languages}
             location={(data.settings as any)?.skillsLocation}
           />
@@ -231,8 +226,6 @@ function MainApp() {
       </div>
     </div>
   );
-
-
 }
 
 function App() {

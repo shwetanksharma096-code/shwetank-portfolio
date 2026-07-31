@@ -1,16 +1,4 @@
-import Redis from 'ioredis';
-
-let redis;
-
-function getRedis() {
-  if (!redis && process.env.REDIS_URL) {
-    redis = new Redis(process.env.REDIS_URL, {
-      maxRetriesPerRequest: 1,
-      connectTimeout: 10000,
-    });
-  }
-  return redis;
-}
+import { getRedis, DEFAULT_ADMIN_PASSWORD } from './_redis.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,8 +15,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'No body provided' });
   }
 
-  // Basic security check (matching the admin panel password)
-  const storedPassword = (await client.get('adminPassword')) || 'shwetank@2024';
+  // Auth: compare against Redis-stored password (falls back to default on first deploy)
+  const storedPassword = (await client.get('adminPassword')) || DEFAULT_ADMIN_PASSWORD;
   if (body.password !== storedPassword) {
     return res.status(401).json({ error: 'Unauthorized: Incorrect password' });
   }

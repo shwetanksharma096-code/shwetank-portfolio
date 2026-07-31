@@ -4,7 +4,6 @@ import { defaultData } from '../../lib/store';
 
 interface SkillsSectionProps {
   skills: typeof defaultData.skills;
-  theme?: 'light' | 'dark';
   languages?: string;
   location?: string;
 }
@@ -41,8 +40,8 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, languages,
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-xs font-mono text-black/80 leading-relaxed">
               {skills && skills.length > 0 ? (
-                skills.map((skill, idx) => (
-                  <div key={idx} className="flex items-start gap-2 border-b border-black/10 pb-2.5">
+                skills.map((skill) => (
+                  <div key={skill} className="flex items-start gap-2 border-b border-black/10 pb-2.5">
                     <span className="text-[#EAB308] font-bold mt-0.5">--</span>
                     <span className="uppercase tracking-wider font-extrabold text-black leading-snug">{skill}</span>
                   </div>

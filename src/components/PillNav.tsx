@@ -246,7 +246,7 @@ export const PillNav: React.FC<PillNavProps> = ({
           className="flex-shrink-0 cursor-pointer"
         >
           <a
-            href={items[0]?.href || '#hero'}
+            href="#hero"
             className="flex items-center justify-center rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-md border border-black/10"
             style={{
               width: '42px',

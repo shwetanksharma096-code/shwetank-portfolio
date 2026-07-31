@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, Calendar, MapPin, X, ArrowUpRight } from 'lucide-react';
-
 import { defaultData } from '../../lib/store';
 
 interface ExperienceSectionProps {
   experience: typeof defaultData.experience;
-  theme?: 'light' | 'dark';
 }
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience }) => {
-  const [activeExp, setActiveExp] = useState<any | null>(null);
+  const [activeExp, setActiveExp] = useState<typeof defaultData.experience[0] | null>(null);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    if (!activeExp) return;
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveExp(null); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [activeExp]);
 
   return (
     <section id="experience" className="w-full bg-[#FFFFFF] text-[#111111] py-16 px-4 sm:px-8 md:px-12 font-sans border-b border-black/10">
@@ -72,12 +78,17 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
         )}
 
       </div>
-
       {/* Experience Detail Modal */}
       <AnimatePresence>
         {activeExp && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-            <div className="absolute inset-0" onClick={() => setActiveExp(null)} />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="exp-modal-title"
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+          >
+            {/* Backdrop close */}
+            <div className="absolute inset-0" onClick={() => setActiveExp(null)} aria-hidden="true" />
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -86,7 +97,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
               className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 flex flex-col gap-6 shadow-2xl z-10 text-black border border-black/10"
             >
               <button
+                type="button"
                 onClick={() => setActiveExp(null)}
+                aria-label="Close experience detail"
                 className="absolute top-6 right-6 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition text-black"
               >
                 <X size={16} />
@@ -97,20 +110,21 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
                   <Briefcase size={22} />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-mono font-bold text-black/50">Position & Organization</span>
-                  <h3 className="font-extrabold text-xl uppercase text-black tracking-tight">{activeExp.role}</h3>
+                  <span className="text-[10px] uppercase font-mono font-bold text-black/50">Position &amp; Organization</span>
+                  <h3 id="exp-modal-title" className="font-extrabold text-xl uppercase text-black tracking-tight">{activeExp.role}</h3>
                   <span className="text-xs font-bold text-black/70">{activeExp.company}</span>
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-4 text-xs font-mono py-3 border-t border-b border-black/10 text-black/70">
                 <span className="flex items-center gap-1.5 font-bold"><Calendar size={13} className="text-black" />{activeExp.year}</span>
-                <span className="flex items-center gap-1.5 font-bold"><MapPin size={13} className="text-black" />Mumbai, Maharashtra</span>
+                <span className="flex items-center gap-1.5 font-bold"><MapPin size={13} className="text-black" />Mumbai, India</span>
               </div>
 
               <p className="text-xs sm:text-sm leading-relaxed text-black/85 font-normal">{activeExp.description}</p>
 
               <button
+                type="button"
                 onClick={() => setActiveExp(null)}
                 className="self-end px-6 py-2.5 rounded-full bg-black text-white text-xs font-black uppercase tracking-wider transition hover:bg-[#FFE600] hover:text-black shadow-md"
               >

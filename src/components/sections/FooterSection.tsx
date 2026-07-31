@@ -24,7 +24,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ data }) => {
         >
           <div className="flex justify-between items-start flex-wrap gap-4">
             <span className="font-mono text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full bg-black text-white w-fit">
-              007. CONNECT & LOCATION
+              006. CONNECT &amp; LOCATION
             </span>
             <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider bg-black/10 px-3 py-1 rounded-full border border-black/20">
               <MapPin size={14} className="text-black" />
@@ -92,8 +92,8 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ data }) => {
 
             {/* Phone Call Logo Circle */}
             <a
-              href="tel:8898134096"
-              title="Call +91 8898134096"
+              href={`tel:${data.about?.phone || '8898134096'}`}
+              title={`Call +91 ${data.about?.phone || '8898134096'}`}
               className="w-13 h-13 rounded-full bg-white text-black border border-black/30 flex items-center justify-center hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg group"
             >
               <Phone size={22} className="group-hover:rotate-12 transition-transform duration-300" />

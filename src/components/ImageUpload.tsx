@@ -2,9 +2,10 @@ import React, { useState, useRef } from "react";
 import { Upload, Trash2, Loader2, X } from "lucide-react";
 
 // ── Cloudinary config ──────────────────────────────────────────────────
-const CLOUD_NAME    = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "digkpl4re";
-const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "axuqgwb1";
-const API_KEY       = import.meta.env.VITE_CLOUDINARY_API_KEY || "5D2BLfIBq7cwhTIrtPDRaxJSo2E";
+// These values MUST be set as Vercel environment variables.
+// Never hardcode production credentials in source code.
+const CLOUD_NAME    = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
 const MAX_SIDE      = 1920;   // px — full HD, sharp on any screen
 const JPEG_QUALITY  = 0.92;   // high quality
 
@@ -54,7 +55,6 @@ const uploadToCloudinary = async (
   const fd = new FormData();
   fd.append("file", toUpload);
   fd.append("upload_preset", UPLOAD_PRESET);
-  if (API_KEY) fd.append("api_key", API_KEY);
   fd.append("folder", folder);
 
   return new Promise((resolve, reject) => {
@@ -77,10 +77,9 @@ const uploadToCloudinary = async (
 };
 
 /** Delete from Cloudinary (best-effort — unsigned deletes are limited) */
-const deleteFromCloudinary = async (url: string) => {
+const deleteFromCloudinary = async (_url: string) => {
   // Cloudinary unsigned delete isn't supported from browser directly.
-  // We just clear the value — actual asset stays on CDN (free storage is generous).
-  console.info("Cloudinary: image cleared from form (CDN asset retained):", url);
+  // We just clear the value — the CDN asset stays (free storage is generous).
 };
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({

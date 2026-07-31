@@ -1,16 +1,4 @@
-import Redis from 'ioredis';
-
-let redis;
-
-function getRedis() {
-  if (!redis && process.env.REDIS_URL) {
-    redis = new Redis(process.env.REDIS_URL, {
-      maxRetriesPerRequest: 1,
-      connectTimeout: 10000,
-    });
-  }
-  return redis;
-}
+import { getRedis, DEFAULT_ADMIN_PASSWORD } from './_redis.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -28,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const storedPassword = (await client.get('adminPassword')) || 'shwetank@2024';
+    const storedPassword = (await client.get('adminPassword')) || DEFAULT_ADMIN_PASSWORD;
     if (body.password === storedPassword) {
       return res.status(200).json({ success: true });
     } else {
