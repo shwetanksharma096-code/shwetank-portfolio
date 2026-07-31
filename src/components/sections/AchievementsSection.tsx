@@ -74,7 +74,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ ach, i }) => {
               </button>
               {/* Dot Indicators */}
               <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">
-                {photos.map((_, idx) => (
+                {photos.map((_: string, idx: number) => (
                   <div
                     key={idx}
                     className={`w-1.5 h-1.5 rounded-full transition-all ${
