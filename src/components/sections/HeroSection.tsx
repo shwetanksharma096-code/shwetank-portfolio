@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { PillNav } from '../PillNav';
 import { CreepyButton } from '../CreepyButton';
+import { PencilTypewriter } from '../PencilTypewriter';
 
 import { defaultData, getWhatsAppLink } from '../../lib/store';
 
@@ -68,7 +69,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
               className="font-handwriting normal-case font-normal italic tracking-normal inline-block" 
               style={{ color: (data as any).hero?.headlineHighlightColor || '#EAB308' }}
             >
-              {(data as any).hero?.headlineHighlight || 'DRIVING IMPACT'}
+              <PencilTypewriter
+                text={(data as any).hero?.headlineHighlight || 'driving impact'}
+                speed={80}
+                delay={600}
+              />
             </span>{' '}
             {(data as any).hero?.headlinePart2 || 'FOR TOP BRAND ACCOUNTS.'}
           </h1>

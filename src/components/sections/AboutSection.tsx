@@ -21,8 +21,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ data }) => {
             <h2 className="font-extrabold text-5xl sm:text-7xl uppercase tracking-tight text-[#111111] leading-none">
               WHY ME?
             </h2>
-            <p className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest text-[#EAB308] mt-2">
-              CAMPAIGN EXCELLENCE & STRATEGIC BRAND GROWTH
+            <p className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest text-black/60 mt-2">
+              CAMPAIGN EXCELLENCE & STRATEGIC <span className="font-handwriting normal-case font-normal italic text-[#EAB308] text-sm sm:text-base tracking-normal">brand growth</span>
             </p>
           </div>
 

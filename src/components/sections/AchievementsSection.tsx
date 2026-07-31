@@ -156,7 +156,7 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({ achiev
             </span>
             <div className="flex flex-col gap-2 mt-3">
               <h2 className="font-extrabold text-4xl sm:text-7xl uppercase tracking-tight text-black leading-none break-words">
-                RECOGNITIONS & AWARDS
+                RECOGNITIONS & <span className="font-handwriting normal-case font-normal italic text-[#EAB308] tracking-normal text-[1.05em]">awards</span>
               </h2>
             </div>
           </div>

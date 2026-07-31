@@ -33,7 +33,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ data }) => {
           </div>
 
           <h2 className="font-extrabold text-5xl sm:text-7xl uppercase tracking-tight leading-none text-black">
-            LET'S WORK TOGETHER
+            LET'S WORK <span className="font-handwriting normal-case font-normal italic text-white tracking-normal text-[1.1em]">together</span>
           </h2>
 
           <p className="text-xs sm:text-sm font-semibold text-black/85 leading-relaxed max-w-2xl">

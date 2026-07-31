@@ -197,8 +197,8 @@ const AdminPageInner: React.FC = () => {
       <aside className="w-full md:w-64 bg-[#111111] text-white border-b md:border-b-0 md:border-r border-black/10 flex flex-col justify-between h-auto md:h-full z-30 shrink-0">
         <div className="p-4 md:p-6 flex flex-col gap-3 md:gap-0">
           <div className="flex justify-between items-center">
-            <div className="text-lg md:text-xl font-extrabold uppercase tracking-wider text-white flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FFE600]" />
+            <div className="text-sm md:text-base font-extrabold uppercase tracking-wide text-white flex items-center gap-1.5 whitespace-nowrap">
+              <span className="w-2 h-2 rounded-full bg-[#FFE600] flex-shrink-0" />
               SHWETANK<span className="text-[#FFE600]">.</span> ADMIN
             </div>
             {/* Logout button on mobile header */}
