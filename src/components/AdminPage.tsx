@@ -123,8 +123,13 @@ const AdminPageInner: React.FC = () => {
     setTimeout(() => setSaved(''), 2500);
   };
 
-  const save = async (section: string, val: any) => {
-    const updated = { ...data, [section]: val };
+  const save = async (sectionOrUpdates: string | Record<string, any>, val?: any) => {
+    let updated: any;
+    if (typeof sectionOrUpdates === 'string') {
+      updated = { ...data, [sectionOrUpdates]: val };
+    } else {
+      updated = { ...data, ...sectionOrUpdates };
+    }
     setData(updated);
     saveData(updated);
     flash('Saving... ⏳');
@@ -358,20 +363,6 @@ const HeroSettings: React.FC<{ data: typeof defaultData; save: (s: string, v: an
         </div>
       </div>
 
-      {/* Legacy Social Links that were in HeroStats */}
-      <div className="flex flex-col gap-4 bg-[#F4F4F6] border border-black/10 p-6 rounded-2xl mb-8">
-        <h3 className="font-bold text-lg mb-2">Social Links</h3>
-        {['instagramUrl', 'linkedinUrl', 'youtubeUrl'].map(key => (
-          <div key={key} className="flex flex-col gap-1">
-            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">{key.replace('Url', '')} URL</label>
-            <input
-              className="bg-white border border-black/10 rounded-lg p-3 text-sm text-[#111111]"
-              value={(form as any)[key] || ''}
-              onChange={e => setVal(key, e.target.value)}
-            />
-          </div>
-        ))}
-      </div>
 
       <button onClick={() => save('hero', form)} className="bg-[#FFE600] px-6 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10">
         Save Hero Settings
@@ -691,9 +682,9 @@ const VideoProjects: React.FC<{
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Video Projects</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Video Projects</h2>
+        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10 w-full sm:w-auto text-center">
           + Add Project
         </button>
       </div>
@@ -901,9 +892,9 @@ const Experience: React.FC<{ data: typeof defaultData; save: (s: string, v: any)
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Experience</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Experience</h2>
+        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10 w-full sm:w-auto text-center">
           + Add Entry
         </button>
       </div>
@@ -1037,7 +1028,7 @@ const Skills: React.FC<{ data: typeof defaultData; save: (s: string, v: any) => 
     <div>
       <h2 className="text-2xl font-bold mb-6">Skills &amp; Expertise</h2>
       <div className="bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6">
-        <div className="flex gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <input
             className="flex-1 bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
             placeholder="Add a new skill (e.g. Premiere Pro)"
@@ -1045,7 +1036,7 @@ const Skills: React.FC<{ data: typeof defaultData; save: (s: string, v: any) => 
             onChange={e => setNewSkill(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleAdd()}
           />
-          <button onClick={handleAdd} className="bg-[#FFE600] px-6 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10 whitespace-nowrap">
+          <button onClick={handleAdd} className="bg-[#FFE600] px-6 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10 whitespace-nowrap w-full sm:w-auto text-center justify-center flex items-center">
             + Add
           </button>
         </div>
@@ -1089,18 +1080,7 @@ const About: React.FC<{ data: typeof defaultData; save: (s: string, v: any) => v
             onChange={e => setVal('bio', e.target.value)}
           />
         </div>
-        {['email', 'phone', 'instagramUrl', 'linkedinUrl', 'youtubeUrl'].map(key => (
-          <div key={key} className="flex flex-col gap-1">
-            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">
-              {key.replace('Url', '')}
-            </label>
-            <input
-              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
-              value={(form as any)[key] || ''}
-              onChange={e => setVal(key, e.target.value)}
-            />
-          </div>
-        ))}
+
         <ImageUpload
           value={form.photoUrl || ''}
           onChange={url => setVal('photoUrl', url)}
@@ -1117,7 +1097,7 @@ const About: React.FC<{ data: typeof defaultData; save: (s: string, v: any) => v
 
 // ─── SETTINGS SUBCOMPONENT ──────────────────────────────────────────
 
-const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) => void }> = ({ data, save }) => {
+const Settings: React.FC<{ data: typeof defaultData; save: (sectionOrUpdates: any, val?: any) => void }> = ({ data, save }) => {
   const [form, setForm] = useState({ 
     web3formsAccessKey: (data.settings as any)?.web3formsAccessKey || '',
     footerHeading: (data.settings as any)?.footerHeading || "Let's work together",
@@ -1125,7 +1105,14 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
     whatsappPhone: (data.settings as any)?.whatsappPhone || '8898134096',
     locationAddress: (data.settings as any)?.locationAddress || 'Kalyan, Mumbai, MH - 421301',
     languages: (data.settings as any)?.languages || 'LANGUAGES: HINDI • ENGLISH • MARATHI',
-    skillsLocation: (data.settings as any)?.skillsLocation || 'MUMBAI, INDIA'
+    skillsLocation: (data.settings as any)?.skillsLocation || 'MUMBAI, INDIA',
+    
+    // Unified Contact Info
+    email: data.about?.email || 'shwetank.sharma096@gmail.com',
+    phone: data.about?.phone || '8898134096',
+    instagramUrl: data.about?.instagramUrl || (data.hero as any)?.instagramUrl || '',
+    linkedinUrl: data.about?.linkedinUrl || (data.hero as any)?.linkedinUrl || '',
+    youtubeUrl: data.about?.youtubeUrl || (data.hero as any)?.youtubeUrl || '',
   });
 
   useEffect(() => {
@@ -1136,27 +1123,119 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
       whatsappPhone: (data.settings as any)?.whatsappPhone || '8898134096',
       locationAddress: (data.settings as any)?.locationAddress || 'Kalyan, Mumbai, MH - 421301',
       languages: (data.settings as any)?.languages || 'LANGUAGES: HINDI • ENGLISH • MARATHI',
-      skillsLocation: (data.settings as any)?.skillsLocation || 'MUMBAI, INDIA'
+      skillsLocation: (data.settings as any)?.skillsLocation || 'MUMBAI, INDIA',
+      
+      email: data.about?.email || 'shwetank.sharma096@gmail.com',
+      phone: data.about?.phone || '8898134096',
+      instagramUrl: data.about?.instagramUrl || (data.hero as any)?.instagramUrl || '',
+      linkedinUrl: data.about?.linkedinUrl || (data.hero as any)?.linkedinUrl || '',
+      youtubeUrl: data.about?.youtubeUrl || (data.hero as any)?.youtubeUrl || '',
     });
-  }, [data.settings]);
+  }, [data]);
 
   const setVal = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
+
+  const handleSaveSettings = () => {
+    const updates = {
+      settings: {
+        ...data.settings,
+        web3formsAccessKey: form.web3formsAccessKey,
+        footerHeading: form.footerHeading,
+        footerBio: form.footerBio,
+        whatsappPhone: form.whatsappPhone,
+        locationAddress: form.locationAddress,
+        languages: form.languages,
+        skillsLocation: form.skillsLocation,
+      },
+      about: {
+        ...data.about,
+        email: form.email,
+        phone: form.phone,
+        instagramUrl: form.instagramUrl,
+        linkedinUrl: form.linkedinUrl,
+        youtubeUrl: form.youtubeUrl,
+      },
+      hero: {
+        ...data.hero,
+        instagramUrl: form.instagramUrl,
+        linkedinUrl: form.linkedinUrl,
+        youtubeUrl: form.youtubeUrl,
+      }
+    };
+    save(updates);
+  };
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Global Settings</h2>
-      <div className="flex flex-col gap-5 bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6">
+      
+      {/* 1. UNIFIED SOCIAL & CONTACT LINKS CARD */}
+      <div className="bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6 flex flex-col gap-4">
+        <h3 className="font-bold text-lg mb-1 flex items-center gap-2">📱 Contact &amp; Social Links</h3>
+        <p className="text-xs text-[#111111]/50 -mt-2">Grouped here to easily edit your email, phone, WhatsApp and social links.</p>
         
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Web3Forms Access Key (Contact Email Form API Key)</label>
-          <input
-            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
-            value={form.web3formsAccessKey}
-            onChange={e => setVal('web3formsAccessKey', e.target.value)}
-            placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Email Address</label>
+            <input
+              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+              value={form.email}
+              onChange={e => setVal('email', e.target.value)}
+              placeholder="e.g. shwetank.sharma096@gmail.com"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Call Phone Number</label>
+            <input
+              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+              value={form.phone}
+              onChange={e => setVal('phone', e.target.value)}
+              placeholder="e.g. 8898134096"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">WhatsApp Phone Number</label>
+            <input
+              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+              value={form.whatsappPhone}
+              onChange={e => setVal('whatsappPhone', e.target.value)}
+              placeholder="e.g. 8898134096"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">LinkedIn URL</label>
+            <input
+              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+              value={form.linkedinUrl}
+              onChange={e => setVal('linkedinUrl', e.target.value)}
+              placeholder="LinkedIn profile link"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Instagram URL</label>
+            <input
+              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+              value={form.instagramUrl}
+              onChange={e => setVal('instagramUrl', e.target.value)}
+              placeholder="Instagram profile link"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">YouTube URL</label>
+            <input
+              className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+              value={form.youtubeUrl}
+              onChange={e => setVal('youtubeUrl', e.target.value)}
+              placeholder="YouTube channel link"
+            />
+          </div>
         </div>
+      </div>
 
+      {/* 2. WEBSITE & FOOTER CONTENT */}
+      <div className="bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6 flex flex-col gap-4">
+        <h3 className="font-bold text-lg mb-1 flex items-center gap-2">✍️ Website &amp; Footer Texts</h3>
+        
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Footer CTA Heading</label>
           <input
@@ -1175,17 +1254,6 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
             onChange={e => setVal('footerBio', e.target.value)}
             placeholder="Short bio/text for the footer"
           />
-          <p className="text-[10px] text-[#111111]/40 mt-0.5">This text appears at the very bottom of the website above the email/whatsapp buttons.</p>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">WhatsApp Phone Number</label>
-          <input
-            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
-            value={form.whatsappPhone}
-            onChange={e => setVal('whatsappPhone', e.target.value)}
-            placeholder="e.g. 8898134096"
-          />
         </div>
 
         <div className="flex flex-col gap-1.5">
@@ -1197,7 +1265,12 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
             placeholder="e.g. Kalyan, Mumbai, MH - 421301"
           />
         </div>
+      </div>
 
+      {/* 3. SKILLS FOOTER DETAILS */}
+      <div className="bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6 flex flex-col gap-4">
+        <h3 className="font-bold text-lg mb-1 flex items-center gap-2">🛠️ Skills Section Info</h3>
+        
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Skills Card Languages</label>
           <input
@@ -1217,9 +1290,26 @@ const Settings: React.FC<{ data: typeof defaultData; save: (s: string, v: any) =
             placeholder="e.g. MUMBAI, INDIA"
           />
         </div>
+      </div>
 
-        <button onClick={() => save('settings', form)} className="bg-[#FFE600] px-6 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-yellow-300 transition w-fit mt-2 shadow-lg shadow-black/10">
-          Save Settings
+      {/* 4. API INTEGRATION */}
+      <div className="bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-6 flex flex-col gap-4">
+        <h3 className="font-bold text-lg mb-1 flex items-center gap-2">⚙️ API Integrations</h3>
+        
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Web3Forms Access Key (Contact Email Form API Key)</label>
+          <input
+            className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm"
+            value={form.web3formsAccessKey}
+            onChange={e => setVal('web3formsAccessKey', e.target.value)}
+            placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          />
+        </div>
+      </div>
+
+      <div className="mb-8 flex">
+        <button onClick={handleSaveSettings} className="bg-[#FFE600] px-8 py-3.5 rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10 w-full sm:w-auto text-center justify-center flex items-center">
+          Save Settings &amp; Socials
         </button>
       </div>
     </div>
@@ -1294,12 +1384,12 @@ const BrandLogosManagement: React.FC<{ data: typeof defaultData; save: (s: strin
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Brand Logos</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300">
-          + Add Logo
-        </button>
-      </div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold">Brand Logos</h2>
+          <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 w-full sm:w-auto text-center">
+            + Add Logo
+          </button>
+        </div>
       <p className="text-sm text-[#111111]/50 mb-6">Yahan aap un brands ke logos add kar sakte ho jinke saath aapne kaam kiya hai. Ye logos aapki website pe showcase honge.</p>
 
       {/* Logos Grid Preview */}
@@ -1435,9 +1525,9 @@ const WebsitesManagement: React.FC<{ data: typeof defaultData; save: (s: string,
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Websites Built</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Websites Built</h2>
+        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 w-full sm:w-auto text-center">
           + Add Website
         </button>
       </div>
@@ -1554,9 +1644,9 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Achievements & Awards</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Achievements & Awards</h2>
+        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 w-full sm:w-auto text-center">
           + Add Achievement / Award
         </button>
       </div>
@@ -1689,9 +1779,9 @@ export const ReviewsManagement: React.FC<{ data: typeof defaultData; save: (s: s
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Client Reviews</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Client Reviews</h2>
+        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 w-full sm:w-auto text-center">
           + Add Review
         </button>
       </div>
@@ -1795,9 +1885,9 @@ export const ServicesManagement: React.FC<{ data: typeof defaultData; save: (s: 
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Services</h2>
-        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Services</h2>
+        <button onClick={openAdd} className="bg-[#FFE600] text-black font-semibold py-2.5 px-4 rounded-lg uppercase tracking-wider text-xs hover:bg-yellow-300 w-full sm:w-auto text-center">
           + Add Service
         </button>
       </div>
