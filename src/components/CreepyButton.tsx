@@ -136,15 +136,17 @@ export function CreepyButton({
             left: 50%;
           }
 
-          .creepy-btn:hover .creepy-btn__cover {
-            background-color: #111111;
-            color: #FFE600;
-            transform: rotate(-10deg);
-            transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1.65);
+          @media (hover: hover) {
+            .creepy-btn:hover .creepy-btn__cover {
+              background-color: #111111;
+              color: #FFE600;
+              transform: rotate(-4.5deg);
+              transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1.65);
+            }
           }
 
           .creepy-btn:active .creepy-btn__cover {
-            transform: rotate(0);
+            transform: rotate(0) scale(0.96);
             transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
           }
 

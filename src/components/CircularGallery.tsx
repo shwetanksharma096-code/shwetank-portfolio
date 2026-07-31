@@ -89,6 +89,8 @@ class Title {
     const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
+      depthTest: false,
+      depthWrite: false,
       vertex: `
         attribute vec3 position;
         attribute vec2 uv;
@@ -115,10 +117,16 @@ class Title {
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
     const aspect = width / height;
-    const textHeightScaled = this.plane.scale.y * 0.15;
-    const textWidthScaled = textHeightScaled * aspect;
-    this.mesh.scale.set(textWidthScaled, textHeightScaled, 1);
-    this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeightScaled * 0.5 - 0.05;
+    
+    // Fix scaling math bug: child mesh scales are relative to parent.
+    // We define a constant world height for the text (e.g. 0.065)
+    const worldHeight = 0.065;
+    const localHeight = worldHeight / this.plane.scale.y;
+    const localWidth = localHeight * aspect;
+    this.mesh.scale.set(localWidth, localHeight, 1);
+    
+    // position.y in local space: -0.5 (bottom of plane) minus half of local text height minus local offset
+    this.mesh.position.y = -0.5 - localHeight * 0.5 - 0.05 / this.plane.scale.y;
     this.mesh.setParent(this.plane);
   }
 }
@@ -404,7 +412,7 @@ class AppCore {
       bend = 1,
       textColor = '#111111',
       borderRadius = 0,
-      font = 'bold 24px Plus Jakarta Sans',
+      font = 'bold 24px Outfit, sans-serif',
       scrollSpeed = 2,
       scrollEase = 0.05
     }: AppConfig
@@ -604,7 +612,7 @@ export function CircularGallery({
   bend = 3,
   textColor = '#111111',
   borderRadius = 0.05,
-  font = 'bold 24px Plus Jakarta Sans',
+  font = 'bold 24px Outfit, sans-serif',
   scrollSpeed = 2,
   scrollEase = 0.05,
   className = ""

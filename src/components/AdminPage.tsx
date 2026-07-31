@@ -68,7 +68,7 @@ const SortableNavItem = ({ id, label, icon, active, onClick }: { id: string, lab
 
       <button
         onClick={onClick}
-        className={`flex-1 flex items-center gap-2 md:gap-3 px-3 py-2 md:p-3 md:pl-8 rounded-lg md:rounded-l-none md:rounded-r-lg text-xs md:text-sm transition text-left border-b-2 md:border-b-0 md:border-l-2 shrink-0 ${active ? 'bg-[#FFE600] text-black font-extrabold border-[#FFE600]' : 'text-white/70 hover:bg-white/10 hover:text-white border-transparent'}`}
+        className={`flex-1 flex items-center gap-2 md:gap-3 px-3 py-2 md:p-3 md:pl-8 rounded-lg md:rounded-l-none md:rounded-r-lg text-xs md:text-sm transition text-left border-b-2 md:border-b-0 md:border-l-2 shrink-0 whitespace-nowrap ${active ? 'bg-[#FFE600] text-black font-extrabold border-[#FFE600]' : 'text-white/70 hover:bg-white/10 hover:text-white border-transparent'}`}
       >
         <span>{icon}</span>
         {label}
@@ -189,7 +189,7 @@ const AdminPageInner: React.FC = () => {
       <button
         key={n.id}
         onClick={() => setTab(n.id)}
-        className={`flex items-center gap-2 md:gap-3 px-3 py-2 md:p-3 md:pl-8 rounded-lg md:rounded-l-none md:rounded-r-lg text-xs md:text-sm transition text-left border-b-2 md:border-b-0 md:border-l-2 shrink-0 ${tab === n.id ? 'bg-[#FFE600] text-black font-extrabold border-[#FFE600]' : 'text-white/70 hover:bg-white/10 hover:text-white border-transparent'}`}
+        className={`flex items-center gap-2 md:gap-3 px-3 py-2 md:p-3 md:pl-8 rounded-lg md:rounded-l-none md:rounded-r-lg text-xs md:text-sm transition text-left border-b-2 md:border-b-0 md:border-l-2 shrink-0 whitespace-nowrap ${tab === n.id ? 'bg-[#FFE600] text-black font-extrabold border-[#FFE600]' : 'text-white/70 hover:bg-white/10 hover:text-white border-transparent'}`}
       >
         <span>{n.icon}</span>
         {n.label}
