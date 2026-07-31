@@ -1659,7 +1659,9 @@ const WebsitesManagement: React.FC<{ data: typeof defaultData; save: (s: string,
           <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="min-w-0 flex-1">
               <h3 className="font-bold text-[#111111] text-sm sm:text-base break-words">{item.title}</h3>
-              <a href={item.url} target="_blank" rel="noreferrer" className="block text-[11px] text-blue-500 truncate max-w-full mt-1">{item.url}</a>
+              <div className="w-full overflow-hidden mt-1">
+                <a href={item.url} target="_blank" rel="noreferrer" className="block text-[11px] text-blue-500 truncate hover:underline">{item.url}</a>
+              </div>
             </div>
             <div className="flex gap-4 w-full sm:w-auto justify-end border-t sm:border-t-0 border-black/5 pt-2 sm:pt-0 shrink-0">
               <button onClick={() => openEdit(item)} className="text-xs font-bold uppercase tracking-wider text-black/60 hover:text-black py-1 px-3 bg-white sm:bg-transparent border sm:border-0 border-black/10 rounded-md sm:rounded-none">Edit</button>
@@ -1786,7 +1788,9 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
                 <h3 className="font-bold text-[#111111] text-sm sm:text-base break-words">{item.title}</h3>
                 <span className="text-[10px] sm:text-xs text-amber-500 font-mono block mt-0.5">{item.badge}</span>
                 {item.linkUrl && (
-                  <a href={item.linkUrl} target="_blank" rel="noreferrer" className="block text-[10px] text-blue-500 truncate max-w-full mt-1">{item.linkUrl}</a>
+                  <div className="w-full overflow-hidden mt-1">
+                    <a href={item.linkUrl} target="_blank" rel="noreferrer" className="block text-[10px] text-blue-500 truncate hover:underline">{item.linkUrl}</a>
+                  </div>
                 )}
               </div>
             </div>
