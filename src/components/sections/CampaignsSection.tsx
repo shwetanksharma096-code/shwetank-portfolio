@@ -4,22 +4,7 @@ import { CircularGallery } from '../CircularGallery';
 import { InfiniteMarquee } from '../InfiniteMarquee';
 
 
-const getBrandLogo = (brandName: string, logos: { name: string; logoUrl: string }[]) => {
-  const match = logos.find(
-    (l) => l.name && brandName && l.name.toLowerCase().includes(brandName.toLowerCase().split(' ')[0])
-  );
-  if (match?.logoUrl) {
-    return (
-      <img
-        src={match.logoUrl}
-        alt={match.name}
-        className="w-4 h-4 rounded object-contain mr-2 flex-shrink-0 bg-black/5"
-        onError={(e) => (e.currentTarget.style.display = 'none')}
-      />
-    );
-  }
-  return <div className="w-1.5 h-1.5 rounded-full bg-[#FFE600] border border-black mr-2 flex-shrink-0" />;
-};
+
 
 interface Creator {
   creator: string;
@@ -108,19 +93,15 @@ export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, b
           />
         </div>
 
-        {/* Brand Logos Marquee Display */}
+        {/* Brand Names Marquee Display (Text Only) */}
         {brandLogos && brandLogos.length > 0 && (
           <div className="bg-[#F4F4F6] border border-black/10 rounded-2xl py-4 relative overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#F4F4F6] to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#F4F4F6] to-transparent z-10 pointer-events-none" />
             <InfiniteMarquee direction="left" speed={1.1} gap="gap-0">
               {brandLogos.map((brand, idx) => (
-                <div key={`l1-${brand.id}-${idx}`} className="flex-shrink-0 flex items-center justify-center px-8 py-2 opacity-80 hover:opacity-100 transition-opacity">
-                  {brand.logoUrl ? (
-                    <img src={brand.logoUrl} alt={brand.name} className="h-8 object-contain max-w-[120px]" />
-                  ) : (
-                    <span className="text-xs font-black uppercase tracking-wider text-black/80">{brand.name}</span>
-                  )}
+                <div key={`l1-${brand.id}-${idx}`} className="flex-shrink-0 flex items-center justify-center px-8 py-3 opacity-80 hover:opacity-100 transition-opacity">
+                  <span className="text-sm font-extrabold uppercase tracking-widest text-black/80">{brand.name}</span>
                 </div>
               ))}
             </InfiniteMarquee>
@@ -134,7 +115,6 @@ export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, b
             {/* Brand Filter Buttons with Generous Spacing */}
             <div className="flex flex-wrap gap-3 sm:gap-3.5 py-2">
               {campaigns.brands.map(brand => {
-                const logo = getBrandLogo(brand, brandLogos);
                 const isActive = activeBrand === brand;
                 return (
                   <button
@@ -145,13 +125,12 @@ export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, b
                       e.stopPropagation();
                       selectBrand(brand);
                     }}
-                    className={`px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider transition-all border flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.03] ${
+                    className={`px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider transition-all border flex items-center justify-center shadow-sm hover:scale-[1.03] ${
                       isActive
                         ? 'bg-[#111111] text-white border-[#111111] shadow-md'
                         : 'bg-white text-black/80 border-black/15 hover:border-black hover:text-black'
                     }`}
                   >
-                    {logo}
                     <span>{brand}</span>
                   </button>
                 );

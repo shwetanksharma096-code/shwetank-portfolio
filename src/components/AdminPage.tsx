@@ -1438,6 +1438,7 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
     badge: '🏆 AWARD WINNER',
     caption: '',
     photoUrl: '',
+    photoUrls: [] as string[],
     linkUrl: '',
     dateText: '',
     hashtags: ''
@@ -1451,7 +1452,7 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
   };
 
   const openAdd = () => {
-    setForm({ title: '', badge: '🏆 AWARD WINNER', caption: '', photoUrl: '', linkUrl: '', dateText: '', hashtags: '' });
+    setForm({ title: '', badge: '🏆 AWARD WINNER', caption: '', photoUrl: '', photoUrls: [], linkUrl: '', dateText: '', hashtags: '' });
     setModal({ isEdit: false });
   };
 
@@ -1461,6 +1462,7 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
       badge: item.badge || '🏆 AWARD WINNER',
       caption: item.caption || '',
       photoUrl: item.photoUrl || '',
+      photoUrls: item.photoUrls || (item.photoUrl ? [item.photoUrl] : []),
       linkUrl: item.linkUrl || '',
       dateText: item.dateText || '',
       hashtags: (item.hashtags || []).join(', ')
@@ -1470,11 +1472,13 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
 
   const saveItem = () => {
     const tagsArr = (form.hashtags || '').split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean);
+    const firstPhoto = form.photoUrls[0] || form.photoUrl || '';
+    const updatedForm = { ...form, photoUrl: firstPhoto };
     if (modal?.isEdit) {
-      persist(items.map((i: any) => i.id === modal.id ? { ...i, ...form, hashtags: tagsArr } : i));
+      persist(items.map((i: any) => i.id === modal.id ? { ...i, ...updatedForm, hashtags: tagsArr } : i));
     } else {
       const uid = () => Math.random().toString(36).slice(2, 9);
-      persist([...items, { id: uid(), ...form, hashtags: tagsArr }]);
+      persist([...items, { id: uid(), ...updatedForm, hashtags: tagsArr }]);
     }
     setModal(null);
   };
@@ -1519,12 +1523,49 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
               <input className="bg-white border border-black/10 rounded-lg px-3 py-2.5 min-h-[44px] text-sm text-[#111111] w-full" placeholder="Achievement Title" value={form.title} onChange={e => setForm(p => ({...p, title: e.target.value}))} />
               <input className="bg-white border border-black/10 rounded-lg px-3 py-2.5 min-h-[44px] text-sm text-[#111111] w-full" placeholder="Badge (e.g. 🏆 PERFORMANCE MARKETING AWARD)" value={form.badge} onChange={e => setForm(p => ({...p, badge: e.target.value}))} />
               <input className="bg-white border border-black/10 rounded-lg px-3 py-2.5 min-h-[44px] text-sm text-[#111111] w-full" placeholder="Date/Year (e.g. E4M Awards 2026)" value={form.dateText} onChange={e => setForm(p => ({...p, dateText: e.target.value}))} />
-              <ImageUpload
-                value={form.photoUrl}
-                onChange={url => setForm(p => ({...p, photoUrl: url}))}
-                folderPath="achievements"
-                label="Achievement Photo"
-              />
+              
+              {/* Carousel multi-photo uploader UI */}
+              <div className="flex flex-col gap-2 border border-black/10 rounded-xl p-3 bg-white/50">
+                <label className="text-xs uppercase tracking-widest text-[#111111]/60 font-medium">Achievement Photos (Carousel)</label>
+                
+                {form.photoUrls && form.photoUrls.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2 mb-2">
+                    {form.photoUrls.map((url, index) => (
+                      <div key={index} className="relative bg-[#0C0C0C] border border-[#222] rounded-lg overflow-hidden aspect-[4/3]">
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setForm(p => ({
+                              ...p,
+                              photoUrls: p.photoUrls.filter((_, idx) => idx !== index)
+                            }));
+                          }}
+                          className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-700 transition text-[10px] font-bold"
+                          title="Remove photo"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <ImageUpload
+                  value=""
+                  onChange={url => {
+                    if (url) {
+                      setForm(p => ({
+                        ...p,
+                        photoUrls: [...(p.photoUrls || []), url]
+                      }));
+                    }
+                  }}
+                  folderPath="achievements"
+                  label="+ Add Photo to Carousel"
+                />
+              </div>
+
               <textarea className="bg-white border border-black/10 rounded-lg px-3 py-2.5 min-h-[80px] text-sm text-[#111111] w-full" placeholder="Caption / Description" value={form.caption} onChange={e => setForm(p => ({...p, caption: e.target.value}))} />
               <input className="bg-white border border-black/10 rounded-lg px-3 py-2.5 min-h-[44px] text-sm text-[#111111] w-full" placeholder="LinkedIn or Verification Link URL" value={form.linkUrl} onChange={e => setForm(p => ({...p, linkUrl: e.target.value}))} />
               <input className="bg-white border border-black/10 rounded-lg px-3 py-2.5 min-h-[44px] text-sm text-[#111111] w-full" placeholder="Hashtags (comma separated)" value={form.hashtags} onChange={e => setForm(p => ({...p, hashtags: e.target.value}))} />
