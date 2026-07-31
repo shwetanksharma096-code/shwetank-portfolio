@@ -71,14 +71,12 @@ export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, b
     setOpenCampaignIdx(null);
   };
 
-  const galleryItems = [
-    { image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop', text: 'PANTALOONS' },
-    { image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=800&auto=format&fit=crop', text: 'THE RAYMOND SHOP' },
-    { image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=800&auto=format&fit=crop', text: 'RELIANCE TRENDS' },
-    { image: 'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=800&auto=format&fit=crop', text: 'COLORPLUS' },
-    { image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop', text: 'TRING INDIA' },
-    { image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop', text: 'BIG BOSS' }
-  ];
+  const galleryItems = (brandLogos && brandLogos.length > 0)
+    ? brandLogos.map((brand) => ({
+        image: brand.logoUrl || `https://placehold.co/400x400/F4F4F6/111111?text=${encodeURIComponent(brand.name)}`,
+        text: brand.name.toUpperCase(),
+      }))
+    : [];
 
   return (
     <section id="campaigns" className="w-full bg-[#FFFFFF] text-[#111111] py-16 px-4 sm:px-8 md:px-12 font-sans border-b border-black/10">

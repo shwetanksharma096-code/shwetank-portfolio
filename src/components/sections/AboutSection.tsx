@@ -116,64 +116,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ data }) => {
           </div>
         </div>
 
-        {/* 2. "HOW" SECTION (Electric Yellow Horizontal Highlight Banner) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.5 }}
-          className="w-full bg-[#FFE600] rounded-3xl p-8 sm:p-12 text-black shadow-2xl relative overflow-hidden border border-black/10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
-        >
-          <div className="md:col-span-8 flex flex-col gap-4">
-            <h2 className="font-extrabold text-5xl sm:text-7xl uppercase tracking-tight leading-none text-black">
-              HOW
-            </h2>
-
-            <div className="font-extrabold text-xl sm:text-3xl uppercase tracking-tight leading-tight text-black/90">
-              WE PLAN. WE LEAD. WE DELIVER.
-            </div>
-
-            <p className="text-xs sm:text-sm font-medium text-black/90 leading-relaxed max-w-2xl">
-              {data.about?.bio || "Client servicing and account management professional with 4+ years of experience leading integrated marketing campaigns for major fashion retail brands."}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-3 mt-2">
-              <a
-                href={getWhatsAppLink(data.settings?.whatsappPhone || '8898134096')}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-2.5 rounded-full bg-black text-white text-xs font-black uppercase tracking-wider hover:bg-white hover:text-black transition shadow-md"
-              >
-                Hire Me Now
-              </a>
-              <span className="font-handwriting text-2xl font-normal text-black rotate-[-4deg]">
-                driving brand growth
-              </span>
-            </div>
-          </div>
-
-          <div className="md:col-span-4 flex justify-center">
-            {data.about?.photoUrl ? (
-              <div className="relative w-full max-w-xs aspect-[4/5] rounded-3xl overflow-hidden border border-black/15 shadow-2xl group bg-black">
-                <img 
-                  src={data.about.photoUrl} 
-                  alt="Shwetank Sharma" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-white text-left">
-                  <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-[#FFE600] block mb-1">CURRENT ROLE</span>
-                  <span className="font-extrabold text-lg uppercase leading-tight block">Associate Account Manager</span>
-                  <span className="text-xs font-medium text-white/80 block mt-0.5">Illuminati Creative Digital</span>
-                </div>
-              </div>
-            ) : (
-              <div className="p-6 rounded-2xl bg-white border border-black/10 shadow-xl text-center w-full max-w-xs">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-black/50 block mb-1">CURRENT ROLE</span>
-                <span className="font-extrabold text-base uppercase text-black block">Associate Account Manager</span>
-                <span className="text-xs font-semibold text-black/70 block mt-1">Illuminati Creative Digital</span>
-              </div>
-            )}
-          </div>
-        </motion.div>
-
       </div>
     </section>
   );
