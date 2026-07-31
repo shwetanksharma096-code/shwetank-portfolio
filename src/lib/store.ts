@@ -329,10 +329,11 @@ export async function fetchGlobalData(): Promise<typeof defaultData | null> {
 
 export async function saveGlobalData(data: typeof defaultData): Promise<boolean> {
   try {
+    const password = (typeof window !== 'undefined' && sessionStorage.getItem('shwetank_admin_auth')) || 'shwetank@2024';
     const res = await fetch('/api/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: 'shwetank@2024', data })
+      body: JSON.stringify({ password, data })
     });
     const json = await res.json();
     return json.success === true;

@@ -23,18 +23,17 @@ export default async function handler(req, res) {
   }
 
   const body = req.body;
-  if (!body) {
-    return res.status(400).json({ error: 'No body provided' });
-  }
-
-  // Basic security check (matching the admin panel password)
-  const storedPassword = (await client.get('adminPassword')) || 'shwetank@2024';
-  if (body.password !== storedPassword) {
-    return res.status(401).json({ error: 'Unauthorized: Incorrect password' });
+  if (!body || !body.currentPassword || !body.newPassword) {
+    return res.status(400).json({ error: 'currentPassword and newPassword are required' });
   }
 
   try {
-    await client.set('portfolioData', JSON.stringify(body.data));
+    const storedPassword = (await client.get('adminPassword')) || 'shwetank@2024';
+    if (body.currentPassword !== storedPassword) {
+      return res.status(401).json({ error: 'Incorrect current password' });
+    }
+
+    await client.set('adminPassword', body.newPassword);
     return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ error: error.message });

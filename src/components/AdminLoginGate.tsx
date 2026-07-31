@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // Simple hash function to avoid storing plain text password
 const ADMIN_SESSION_KEY = 'shwetank_admin_auth';
-const CORRECT_PASSWORD = 'shwetank@2024'; // Change this to whatever password you want
+
 
 interface AdminLoginGateProps {
   children: React.ReactNode;
@@ -19,27 +19,35 @@ export const AdminLoginGate: React.FC<AdminLoginGateProps> = ({ children }) => {
   // Check session on mount
   useEffect(() => {
     const session = sessionStorage.getItem(ADMIN_SESSION_KEY);
-    if (session === 'true') {
+    if (session) {
       setAuthed(true);
     }
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Small delay for UX feel
-    setTimeout(() => {
-      if (password === CORRECT_PASSWORD) {
-        sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+    try {
+      const res = await fetch('/api/verify-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        sessionStorage.setItem(ADMIN_SESSION_KEY, password);
         setAuthed(true);
       } else {
-        setError('Incorrect password. Please try again.');
+        setError(data.error || 'Incorrect password. Please try again.');
         setPassword('');
       }
+    } catch (err) {
+      setError('Connection failed. Please check internet connection.');
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
 

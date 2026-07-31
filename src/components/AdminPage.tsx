@@ -1115,6 +1115,14 @@ const Settings: React.FC<{ data: typeof defaultData; save: (sectionOrUpdates: an
     youtubeUrl: data.about?.youtubeUrl || (data.hero as any)?.youtubeUrl || '',
   });
 
+  // Change password states
+  const [pwdCurrent, setPwdCurrent] = useState('');
+  const [pwdNew, setPwdNew] = useState('');
+  const [pwdConfirm, setPwdConfirm] = useState('');
+  const [pwdError, setPwdError] = useState('');
+  const [pwdSuccess, setPwdSuccess] = useState('');
+  const [pwdLoading, setPwdLoading] = useState(false);
+
   useEffect(() => {
     setForm({ 
       web3formsAccessKey: (data.settings as any)?.web3formsAccessKey || '',
@@ -1163,6 +1171,51 @@ const Settings: React.FC<{ data: typeof defaultData; save: (sectionOrUpdates: an
       }
     };
     save(updates);
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPwdError('');
+    setPwdSuccess('');
+
+    if (!pwdCurrent || !pwdNew || !pwdConfirm) {
+      setPwdError('All password fields are required.');
+      return;
+    }
+
+    if (pwdNew !== pwdConfirm) {
+      setPwdError('New passwords do not match.');
+      return;
+    }
+
+    if (pwdNew.length < 6) {
+      setPwdError('New password must be at least 6 characters.');
+      return;
+    }
+
+    setPwdLoading(true);
+
+    try {
+      const res = await fetch('/api/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: pwdCurrent, newPassword: pwdNew })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        sessionStorage.setItem('shwetank_admin_auth', pwdNew);
+        setPwdSuccess('Password changed successfully! ✅');
+        setPwdCurrent('');
+        setPwdNew('');
+        setPwdConfirm('');
+      } else {
+        setPwdError(data.error || 'Failed to change password.');
+      }
+    } catch (err) {
+      setPwdError('Network error. Failed to change password.');
+    } finally {
+      setPwdLoading(false);
+    }
   };
 
   return (
@@ -1307,10 +1360,67 @@ const Settings: React.FC<{ data: typeof defaultData; save: (sectionOrUpdates: an
         </div>
       </div>
 
-      <div className="mb-8 flex">
+      <div className="mb-6 flex">
         <button onClick={handleSaveSettings} className="bg-[#FFE600] px-8 py-3.5 rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-yellow-300 transition shadow-lg shadow-black/10 w-full sm:w-auto text-center justify-center flex items-center">
           Save Settings &amp; Socials
         </button>
+      </div>
+
+      {/* 5. CHANGE PASSWORD SECTION */}
+      <div className="bg-[#F4F4F6] border border-black/10 p-6 rounded-xl mb-8 flex flex-col gap-4">
+        <h3 className="font-bold text-lg mb-1 flex items-center gap-2">🔑 Change Admin Password</h3>
+        <p className="text-xs text-[#111111]/50 -mt-2">Update the password required to access this admin panel and save changes.</p>
+        
+        <form onSubmit={handlePasswordChange} className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Current Password</label>
+              <input
+                type="password"
+                className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm font-mono"
+                value={pwdCurrent}
+                onChange={e => setPwdCurrent(e.target.value)}
+                placeholder="Current password"
+                required
+              />
+            </div>
+            
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">New Password</label>
+              <input
+                type="password"
+                className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm font-mono"
+                value={pwdNew}
+                onChange={e => setPwdNew(e.target.value)}
+                placeholder="At least 6 chars"
+                required
+              />
+            </div>
+            
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Confirm New Password</label>
+              <input
+                type="password"
+                className="bg-white border border-black/10 rounded-lg p-3 text-[#111111] text-sm font-mono"
+                value={pwdConfirm}
+                onChange={e => setPwdConfirm(e.target.value)}
+                placeholder="Confirm new password"
+                required
+              />
+            </div>
+          </div>
+
+          {pwdError && <p className="text-xs font-bold text-red-500 font-mono">⚠ {pwdError}</p>}
+          {pwdSuccess && <p className="text-xs font-bold text-green-600 font-mono">{pwdSuccess}</p>}
+
+          <button
+            type="submit"
+            disabled={pwdLoading}
+            className="bg-black hover:bg-zinc-800 text-white font-bold px-6 py-2.5 rounded-lg text-xs uppercase tracking-widest transition w-full sm:w-auto text-center justify-center flex items-center"
+          >
+            {pwdLoading ? 'Changing... ⏳' : 'Update Password'}
+          </button>
+        </form>
       </div>
     </div>
   );
