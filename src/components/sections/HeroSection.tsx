@@ -41,7 +41,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
       </header>
 
       {/* ─── MAIN EDITORIAL BANNER ─── */}
-      <div className="max-w-7xl mx-auto w-full flex flex-col items-center justify-center text-center my-auto relative z-10 px-4 sm:px-8 pt-6">
+      <div className="max-w-[95%] mx-auto w-full flex flex-col items-center justify-center text-center my-auto relative z-10 px-4 sm:px-8 pt-6">
         
         {/* Top Tag & Awards Pill */}
         <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
@@ -60,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
         {/* High-Impact Statement Headline */}
         <motion.div
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-          className="relative max-w-6xl"
+          className="relative max-w-none"
         >
           <h1 className="font-extrabold uppercase leading-[1.05] tracking-tight text-[#111111] text-[clamp(2.5rem,6.8vw,96px)]">
             {(data as any).hero?.headlinePart1 || 'CLIENT SERVICING & CAMPAIGN MANAGEMENT'} <span style={{ color: (data as any).hero?.headlineHighlightColor || '#EAB308' }}>{(data as any).hero?.headlineHighlight || 'DRIVING IMPACT'}</span> {(data as any).hero?.headlinePart2 || 'FOR TOP BRAND ACCOUNTS.'}
