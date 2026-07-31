@@ -322,9 +322,9 @@ const HeroSettings: React.FC<{ data: typeof defaultData; save: (s: string, v: an
           <div className="flex flex-col gap-1 flex-1">
             <label className="text-xs font-bold uppercase tracking-widest text-black/70 mb-1">Highlight Text</label>
             <input
-              className="bg-white border border-black/10 rounded-lg px-3 py-2.5 text-sm text-[#111111] w-full font-bold uppercase"
+              className="bg-white border border-black/10 rounded-lg px-3 py-2.5 text-sm text-[#111111] w-full font-bold"
               value={form.headlineHighlight || ''}
-              onChange={e => setVal('headlineHighlight', e.target.value.toUpperCase())}
+              onChange={e => setVal('headlineHighlight', e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1 w-[120px]">

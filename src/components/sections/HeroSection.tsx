@@ -63,7 +63,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
           className="relative max-w-none"
         >
           <h1 className="font-extrabold uppercase leading-[1.05] tracking-tight text-[#111111] text-[clamp(2.5rem,6.8vw,96px)]">
-            {(data as any).hero?.headlinePart1 || 'CLIENT SERVICING & CAMPAIGN MANAGEMENT'} <span style={{ color: (data as any).hero?.headlineHighlightColor || '#EAB308' }}>{(data as any).hero?.headlineHighlight || 'DRIVING IMPACT'}</span> {(data as any).hero?.headlinePart2 || 'FOR TOP BRAND ACCOUNTS.'}
+            {(data as any).hero?.headlinePart1 || 'CLIENT SERVICING & CAMPAIGN MANAGEMENT'}{' '}
+            <span 
+              className="font-handwriting normal-case font-normal italic tracking-normal inline-block" 
+              style={{ color: (data as any).hero?.headlineHighlightColor || '#EAB308' }}
+            >
+              {(data as any).hero?.headlineHighlight || 'DRIVING IMPACT'}
+            </span>{' '}
+            {(data as any).hero?.headlinePart2 || 'FOR TOP BRAND ACCOUNTS.'}
           </h1>
         </motion.div>
 
