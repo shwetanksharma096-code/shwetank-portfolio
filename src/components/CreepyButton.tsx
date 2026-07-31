@@ -108,7 +108,7 @@ export function CreepyButton({
             align-items: center;
             gap: 0.375em;
             right: 1.2em;
-            bottom: 0.7em;
+            bottom: 0.45em;
             height: 0.75em;
             z-index: 0;
             pointer-events: none; 
