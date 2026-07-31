@@ -1656,14 +1656,14 @@ const WebsitesManagement: React.FC<{ data: typeof defaultData; save: (s: string,
       </div>
       <div className="flex flex-col gap-3 mb-8">
         {items.map((item: any) => (
-          <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex justify-between items-center">
-            <div>
-              <h3 className="font-bold text-[#111111]">{item.title}</h3>
-              <a href={item.url} target="_blank" rel="noreferrer" className="text-xs text-blue-400">{item.url}</a>
+          <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="min-w-0 flex-1">
+              <h3 className="font-bold text-[#111111] text-sm sm:text-base break-words">{item.title}</h3>
+              <a href={item.url} target="_blank" rel="noreferrer" className="block text-[11px] text-blue-500 truncate max-w-full mt-1">{item.url}</a>
             </div>
-            <div className="flex gap-3">
-              <button onClick={() => openEdit(item)} className="text-xs text-[#111111]/50 hover:text-[#111111]">Edit</button>
-              <button onClick={() => { if(confirm('Delete?')) persist(items.filter((i:any) => i.id !== item.id)); }} className="text-xs text-red-500 hover:text-red-400">Delete</button>
+            <div className="flex gap-4 w-full sm:w-auto justify-end border-t sm:border-t-0 border-black/5 pt-2 sm:pt-0 shrink-0">
+              <button onClick={() => openEdit(item)} className="text-xs font-bold uppercase tracking-wider text-black/60 hover:text-black py-1 px-3 bg-white sm:bg-transparent border sm:border-0 border-black/10 rounded-md sm:rounded-none">Edit</button>
+              <button onClick={() => { if(confirm('Delete?')) persist(items.filter((i:any) => i.id !== item.id)); }} className="text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-500 py-1 px-3 bg-red-50 sm:bg-transparent border sm:border-0 border-red-200 sm:border-transparent rounded-md sm:rounded-none">Delete</button>
             </div>
           </div>
         ))}
@@ -1775,24 +1775,24 @@ const AchievementsManagement: React.FC<{ data: typeof defaultData; save: (s: str
       </div>
       <div className="flex flex-col gap-3 mb-8">
         {items.map((item: any) => (
-          <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex justify-between items-center">
-            <div className="flex items-center gap-3">
+          <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-start gap-3 min-w-0 flex-1">
               {item.photoUrl ? (
-                <img src={item.photoUrl} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                <img src={item.photoUrl} alt="" className="w-12 h-12 rounded-lg object-cover shrink-0" />
               ) : (
-                <div className="w-12 h-12 rounded-lg bg-[#222] flex items-center justify-center font-bold text-xs">🏆</div>
+                <div className="w-12 h-12 rounded-lg bg-[#222] flex items-center justify-center font-bold text-xs shrink-0">🏆</div>
               )}
-              <div>
-                <h3 className="font-bold text-[#111111]">{item.title}</h3>
-                <span className="text-xs text-amber-400 font-mono">{item.badge}</span>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-bold text-[#111111] text-sm sm:text-base break-words">{item.title}</h3>
+                <span className="text-[10px] sm:text-xs text-amber-500 font-mono block mt-0.5">{item.badge}</span>
                 {item.linkUrl && (
-                  <a href={item.linkUrl} target="_blank" rel="noreferrer" className="block text-[10px] text-blue-400 truncate max-w-xs">{item.linkUrl}</a>
+                  <a href={item.linkUrl} target="_blank" rel="noreferrer" className="block text-[10px] text-blue-500 truncate max-w-full mt-1">{item.linkUrl}</a>
                 )}
               </div>
             </div>
-            <div className="flex gap-3">
-              <button onClick={() => openEdit(item)} className="text-xs text-[#111111]/50 hover:text-[#111111]">Edit</button>
-              <button onClick={() => { if(confirm('Delete?')) persist(items.filter((i:any) => i.id !== item.id)); }} className="text-xs text-red-500 hover:text-red-400">Delete</button>
+            <div className="flex gap-4 w-full sm:w-auto justify-end border-t sm:border-t-0 border-black/5 pt-2 sm:pt-0 shrink-0">
+              <button onClick={() => openEdit(item)} className="text-xs font-bold uppercase tracking-wider text-black/60 hover:text-black py-1 px-3 bg-white sm:bg-transparent border sm:border-0 border-black/10 rounded-md sm:rounded-none">Edit</button>
+              <button onClick={() => { if(confirm('Delete?')) persist(items.filter((i:any) => i.id !== item.id)); }} className="text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-500 py-1 px-3 bg-red-50 sm:bg-transparent border sm:border-0 border-red-200 sm:border-transparent rounded-md sm:rounded-none">Delete</button>
             </div>
           </div>
         ))}
@@ -2018,18 +2018,18 @@ export const ServicesManagement: React.FC<{ data: typeof defaultData; save: (s: 
 
       <div className="flex flex-col gap-3">
         {items.map((item: any, idx: number) => (
-          <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex justify-between items-center gap-4">
-            <div className="flex items-center gap-3 truncate">
+          <div key={item.id} className="bg-[#F4F4F6] border border-black/10 p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               <span className="font-mono text-xs text-[#111111]/35 shrink-0">{String(idx + 1).padStart(2, '0')}</span>
               <span className="text-base shrink-0">{getIconLabel(item.icon)}</span>
-              <div className="truncate">
-                <span className="font-semibold text-[#111111] block truncate">{item.name}</span>
-                <span className="text-xs text-[#111111]/50 truncate block">{item.description}</span>
+              <div className="min-w-0 flex-1">
+                <span className="font-semibold text-[#111111] text-sm sm:text-base block truncate">{item.name}</span>
+                <span className="text-xs text-[#111111]/50 block truncate">{item.description}</span>
               </div>
             </div>
-            <div className="flex gap-3 shrink-0">
-              <button onClick={() => openEdit(item)} className="text-xs text-[#111111]/50 hover:text-[#111111]">Edit</button>
-              <button onClick={() => deleteItem(item.id)} className="text-xs text-red-500 hover:text-red-400">Delete</button>
+            <div className="flex gap-4 w-full sm:w-auto justify-end border-t sm:border-t-0 border-black/5 pt-2 sm:pt-0 shrink-0">
+              <button onClick={() => openEdit(item)} className="text-xs font-bold uppercase tracking-wider text-black/60 hover:text-black py-1 px-3 bg-white sm:bg-transparent border sm:border-0 border-black/10 rounded-md sm:rounded-none">Edit</button>
+              <button onClick={() => deleteItem(item.id)} className="text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-500 py-1 px-3 bg-red-50 sm:bg-transparent border sm:border-0 border-red-200 sm:border-transparent rounded-md sm:rounded-none">Delete</button>
             </div>
           </div>
         ))}
