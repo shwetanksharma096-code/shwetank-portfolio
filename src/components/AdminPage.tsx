@@ -221,24 +221,37 @@ const AdminPageInner: React.FC = () => {
             {renderNavItem(NAV.find(n => n.id === 'brand-logos')!)}
             
             <div className="text-[10px] font-bold uppercase tracking-widest text-white/40 md:mt-4 md:mb-1 md:ml-3 hidden md:block">Website Order</div>
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-              <SortableContext items={currentOrder} strategy={verticalListSortingStrategy}>
-                {currentOrder.map(id => {
-                  const n = NAV.find(item => item.id === id);
-                  if (!n) return null;
-                  return (
-                    <SortableNavItem 
-                      key={n.id} 
-                      id={n.id} 
-                      label={n.label} 
-                      icon={n.icon} 
-                      active={tab === n.id} 
-                      onClick={() => setTab(n.id)} 
-                    />
-                  );
-                })}
-              </SortableContext>
-            </DndContext>
+            
+            {/* Desktop: Draggable and Sortable List */}
+            <div className="hidden md:flex md:flex-col md:gap-1 w-full animate-fadeIn">
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={currentOrder} strategy={verticalListSortingStrategy}>
+                  {currentOrder.map(id => {
+                    const n = NAV.find(item => item.id === id);
+                    if (!n) return null;
+                    return (
+                      <SortableNavItem 
+                        key={n.id} 
+                        id={n.id} 
+                        label={n.label} 
+                        icon={n.icon} 
+                        active={tab === n.id} 
+                        onClick={() => setTab(n.id)} 
+                      />
+                    );
+                  })}
+                </SortableContext>
+              </DndContext>
+            </div>
+
+            {/* Mobile: Clean horizontal scrollable buttons */}
+            <div className="flex flex-row md:hidden gap-1.5">
+              {currentOrder.map(id => {
+                const n = NAV.find(item => item.id === id);
+                if (!n) return null;
+                return renderNavItem(n);
+              })}
+            </div>
 
             <div className="text-[10px] font-bold uppercase tracking-widest text-white/40 md:mt-4 md:mb-1 md:ml-3 hidden md:block">System</div>
             {renderNavItem(NAV.find(n => n.id === 'settings')!)}
