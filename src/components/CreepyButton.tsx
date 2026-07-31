@@ -140,7 +140,7 @@ export function CreepyButton({
             .creepy-btn:hover .creepy-btn__cover {
               background-color: #111111;
               color: #FFE600;
-              transform: rotate(-4.5deg);
+              transform: rotate(-10deg);
               transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1.65);
             }
           }
