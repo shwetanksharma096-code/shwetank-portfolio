@@ -1,0 +1,261 @@
+/* ─── GLOBAL RESET & PERFORMANCE BASE ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-handwriting {
+  font-family: 'Architects Daughter', 'Reenie Beanie', cursive;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+
+.text-yellow-accent {
+  color: #FACC15;
+}
+
+.bg-yellow-accent {
+  background-color: #FFE600;
+}
+
+
+/* 3D PERSPECTIVE & CREATIVE CARD STYLES */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.creative-glass-card {
+  background: rgba(24, 24, 28, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.creative-glass-card:hover {
+  border-color: rgba(255, 69, 0, 0.5);
+  box-shadow: 0 20px 50px -10px rgba(255, 69, 0, 0.25), 0 0 20px rgba(255, 69, 0, 0.15);
+}
+
+
+
+
+
+/* ─── PREMIUM AMBIENT ANIMATED MESH GRADIENT BLOBS ─── */
+@keyframes blob-slow {
+  0%   { transform: translate3d(0px, 0px, 0px) scale(1); }
+  33%  { transform: translate3d(80px, -50px, 0px) scale(1.1); }
+  66%  { transform: translate3d(-30px, 40px, 0px) scale(0.95); }
+  100% { transform: translate3d(0px, 0px, 0px) scale(1); }
+}
+
+@keyframes blob-reverse {
+  0%   { transform: translate3d(0px, 0px, 0px) scale(1); }
+  33%  { transform: translate3d(-60px, 60px, 0px) scale(0.95); }
+  66%  { transform: translate3d(40px, -20px, 0px) scale(1.05); }
+  100% { transform: translate3d(0px, 0px, 0px) scale(1); }
+}
+
+.animate-blob-slow    {
+  animation: blob-slow 20s infinite ease-in-out;
+  will-change: transform;
+}
+.animate-blob-reverse {
+  animation: blob-reverse 25s infinite ease-in-out;
+  will-change: transform;
+}
+
+/* Disable expensive blob animations on low-end / touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .animate-blob-slow,
+  .animate-blob-reverse {
+    animation-duration: 40s; /* Slow way down on mobile */
+  }
+}
+
+
+/* ─── EDITOR GRID BACKGROUND PATTERN ─── */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right,  rgba(215,226,234,0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(215,226,234,0.02) 1px, transparent 1px);
+}
+
+
+/* ─── PREMIUM SHADOW LAYERS ─── */
+.premium-shadow-sm {
+  box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05), 0 2px 8px -1px rgba(0,0,0,0.03);
+}
+.premium-shadow-md {
+  box-shadow: 0 12px 30px -4px rgba(0,0,0,0.08), 0 4px 12px -2px rgba(0,0,0,0.04);
+}
+.premium-shadow-lg {
+  box-shadow: 0 20px 40px -8px rgba(0,0,0,0.12), 0 8px 20px -4px rgba(0,0,0,0.06);
+}
+
+
+/* ─── GLASSMORPHIC HOVER GLOW ─── */
+.hover-card-glow { transition: box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+.hover-card-glow:hover {
+  box-shadow: 0 20px 40px -10px rgba(187,204,215,0.08), 0 0 15px -3px rgba(187,204,215,0.05);
+}
+.hover-card-glow-dark:hover {
+  box-shadow: 0 20px 50px -15px rgba(0,0,0,0.5), 0 0 20px -5px rgba(187,204,215,0.03);
+}
+
+
+/* ─── CUSTOM SCROLLBAR ─── */
+::-webkit-scrollbar          { width: 6px; height: 6px; }
+::-webkit-scrollbar-track    { background: #08090A; }
+::-webkit-scrollbar-thumb    { background: #2a2a2a; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+.scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: #2a2a2a #08090A; }
+
+/* ─── EXPERTISE TICKER ─── */
+@keyframes marquee-ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-ticker {
+  animation: marquee-ticker 18s linear infinite;
+  display: inline-flex;
+}
+
+
+
+/* ─── FILM GRAIN OVERLAY ─── */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10%  { transform: translate(-5%, -7%); }
+  20%  { transform: translate(-12%, 5%); }
+  30%  { transform: translate(6%, -20%); }
+  40%  { transform: translate(-4%, 22%); }
+  50%  { transform: translate(-13%, 8%); }
+  60%  { transform: translate(12%, 0%); }
+  70%  { transform: translate(0%, 12%); }
+  80%  { transform: translate(3%, 30%); }
+  90%  { transform: translate(-8%, 8%); }
+}
+
+.film-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.film-grain::before {
+  content: '';
+  position: absolute;
+  inset: -150%;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.6s steps(2) infinite;
+}
+
+/* Disable grain animation on touch/mobile — saves significant CPU */
+@media (hover: none) and (pointer: coarse) {
+  .film-grain::before {
+    animation: none !important;
+    opacity: 0.02;
+  }
+}
+
+
+/* ─── GLOBAL CLICK RIPPLE ─── */
+@keyframes ripple-out {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(18); opacity: 0; }
+}
+
+.global-click-ripple {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(187, 204, 215, 0.25);
+  pointer-events: none;
+  z-index: 9998;
+  animation: ripple-out 0.65s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* Disable click ripple on mobile — unnecessary */
+@media (hover: none) and (pointer: coarse) {
+  .global-click-ripple { display: none; }
+}
+
+
+/* ─── CONFETTI BURST ANIMATION ─── */
+@keyframes confetti-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2) rotate(var(--rot, 270deg));
+    opacity: 0;
+  }
+}
+
+
+/* ─── 3D FLIP CARD ─── */
+.flip-card {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+
+/* ─── MARQUEE PERFORMANCE ─── */
+.marquee-track {
+  will-change: scroll-position;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+

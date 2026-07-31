@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7621B0" />
+      <stop offset="50%" stop-color="#B600A8" />
+      <stop offset="100%" stop-color="#00A8FF" />
+    </linearGradient>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes pulse {
+        0%, 100% { transform: scale(0.95); opacity: 0.9; }
+        50% { transform: scale(1.05); opacity: 1; }
+      }
+      .play-btn {
+        transform-origin: center;
+        animation: pulse 2.5s infinite ease-in-out;
+      }
+      .ring {
+        transform-origin: center;
+        animation: spin 10s infinite linear;
+      }
+    </style>
+  </defs>
+  
+  <!-- Outer Rotating Dash Ring (Film Reel / Loader vibe) -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="url(#glow)" stroke-width="6" stroke-dasharray="25 15" class="ring" />
+  
+  <!-- Sleek Glowing Play Button (Video Creator vibe) -->
+  <polygon points="42,32 70,50 42,68" fill="url(#glow)" class="play-btn" />
+</svg>
