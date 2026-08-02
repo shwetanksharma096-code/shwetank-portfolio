@@ -1,11 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Upload, Trash2, Loader2, X } from "lucide-react";
 
-// ── Cloudinary config ──────────────────────────────────────────────────
-const CLOUD_NAME    = (import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string) || "digkpl4re";
-const UPLOAD_PRESET = (import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string) || "axuqgwb1";
-const MAX_SIDE      = 1920;   // px — full HD, sharp on any screen
-const JPEG_QUALITY  = 0.92;   // high quality
+// ── Image Processing Config ──────────────────────────────────────────────
+const MAX_SIDE     = 1200;   // px — sharp & crisp on any screen
+const JPEG_QUALITY = 0.88;   // high visual quality, ultra-compact size
 
 interface ImageUploadProps {
   value: string;
@@ -14,37 +12,8 @@ interface ImageUploadProps {
   label?: string;
 }
 
-/** Resize + convert to JPEG (skip SVG) */
-const toJpeg = (file: File): Promise<File> =>
-  new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      let { width, height } = img;
-      if (width > MAX_SIDE || height > MAX_SIDE) {
-        if (width > height) { height = Math.round((height / width) * MAX_SIDE); width = MAX_SIDE; }
-        else                { width  = Math.round((width / height) * MAX_SIDE); height = MAX_SIDE; }
-      }
-      const canvas = document.createElement("canvas");
-      canvas.width = width; canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return reject(new Error("Canvas not supported"));
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(0, 0, width, height);
-      ctx.drawImage(img, 0, 0, width, height);
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) return reject(new Error("Blob failed"));
-          resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: "image/jpeg" }));
-        },
-        "image/jpeg", JPEG_QUALITY
-      );
-    };
-    img.onerror = () => reject(new Error("Image load error"));
-    img.src = URL.createObjectURL(file);
-  });
-
-/** Convert file to compressed Data URL (fallback when Cloudinary is unavailable or returns 401) */
-const fileToDataUrl = (file: File, maxSide = 800, quality = 0.85): Promise<string> =>
+/** Convert file to compressed Data URL (direct client-side processing) */
+const fileToDataUrl = (file: File, maxSide = MAX_SIDE, quality = JPEG_QUALITY): Promise<string> =>
   new Promise((resolve, reject) => {
     if (file.type === "image/svg+xml") {
       const reader = new FileReader();
@@ -80,47 +49,10 @@ const fileToDataUrl = (file: File, maxSide = 800, quality = 0.85): Promise<strin
     img.src = URL.createObjectURL(file);
   });
 
-/** Upload to Cloudinary using unsigned preset — returns CDN URL */
-const uploadToCloudinary = async (
-  file: File,
-  folder: string,
-  onProgress: (pct: number) => void
-): Promise<string> => {
-  const toUpload = file.type === "image/svg+xml" ? file : await toJpeg(file);
-  const fd = new FormData();
-  fd.append("file", toUpload);
-  fd.append("upload_preset", UPLOAD_PRESET);
-  fd.append("folder", folder);
-
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
-    };
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        const res = JSON.parse(xhr.responseText);
-        resolve(res.secure_url);
-      } else {
-        reject(new Error(`Upload failed: ${xhr.status}`));
-      }
-    };
-    xhr.onerror = () => reject(new Error("Network error during upload"));
-    xhr.send(fd);
-  });
-};
-
-/** Delete from Cloudinary (best-effort — unsigned deletes are limited) */
-const deleteFromCloudinary = async (_url: string) => {
-  // Cloudinary unsigned delete isn't supported from browser directly.
-  // We just clear the value — the CDN asset stays (free storage is generous).
-};
-
 export const ImageUpload: React.FC<ImageUploadProps> = ({
   value,
   onChange,
-  folderPath,
+  folderPath: _folderPath,
   label = "Upload Image",
 }) => {
   const [uploading, setUploading] = useState(false);
@@ -129,25 +61,18 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processUpload = async (file: File) => {
-    if (file.size > 10 * 1024 * 1024) { setError("File too large. Max 10MB."); return; }
+    if (file.size > 15 * 1024 * 1024) { setError("File too large. Max 15MB."); return; }
     const ok = ["image/jpeg","image/png","image/webp","image/avif","image/gif","image/svg+xml"];
     if (!ok.includes(file.type)) { setError("Only JPG, PNG, WebP, AVIF, GIF, SVG allowed."); return; }
 
-    setError(null); setUploading(true); setProgress(10);
+    setError(null); setUploading(true); setProgress(30);
     try {
-      // 1. Try Cloudinary upload first
-      const url = await uploadToCloudinary(file, folderPath, setProgress);
-      onChange(url);
+      // Direct high-quality client-side compression — 100% reliable, zero 401 network errors
+      const dataUrl = await fileToDataUrl(file, 1000, 0.88);
+      setProgress(100);
+      onChange(dataUrl);
     } catch (err: any) {
-      // 2. Automatic fallback to client-side compressed Data URL if Cloudinary fails (e.g. 401 or network error)
-      try {
-        setProgress(60);
-        const dataUrl = await fileToDataUrl(file);
-        setProgress(100);
-        onChange(dataUrl);
-      } catch (fallbackErr: any) {
-        setError(fallbackErr.message || "Upload failed. Try again.");
-      }
+      setError(err?.message || "Failed to process image.");
     } finally {
       setUploading(false);
     }
@@ -168,7 +93,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const handleDelete = async () => {
     if (!value) return;
     if (!confirm("Is image ko hatana chahte ho?")) return;
-    await deleteFromCloudinary(value);
     onChange("");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
