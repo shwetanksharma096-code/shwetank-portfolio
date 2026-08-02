@@ -283,19 +283,24 @@ class Media {
       transparent: true
     });
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    const isRemote = this.image.startsWith('http://') || this.image.startsWith('https://');
+    if (isRemote) {
+      img.crossOrigin = 'anonymous';
+    }
     img.src = this.image;
     img.onload = () => {
       texture.image = img;
-      this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+      this.program.uniforms.uImageSizes.value = [img.naturalWidth || 400, img.naturalHeight || 400];
     };
     img.onerror = () => {
-      const fallbackImg = new Image();
-      fallbackImg.src = this.image;
-      fallbackImg.onload = () => {
-        texture.image = fallbackImg;
-        this.program.uniforms.uImageSizes.value = [fallbackImg.naturalWidth, fallbackImg.naturalHeight];
-      };
+      if (isRemote) {
+        const fallbackImg = new Image();
+        fallbackImg.src = this.image;
+        fallbackImg.onload = () => {
+          texture.image = fallbackImg;
+          this.program.uniforms.uImageSizes.value = [fallbackImg.naturalWidth || 400, fallbackImg.naturalHeight || 400];
+        };
+      }
     };
   }
 
@@ -627,6 +632,8 @@ export function CircularGallery({
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const itemsHash = JSON.stringify(items || []);
+
   useEffect(() => {
     if (!containerRef.current) return;
     const app = new AppCore(containerRef.current, {
@@ -641,7 +648,7 @@ export function CircularGallery({
     return () => {
       app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+  }, [itemsHash, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
 
   return (
     <div 
