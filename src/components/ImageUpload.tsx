@@ -43,6 +43,43 @@ const toJpeg = (file: File): Promise<File> =>
     img.src = URL.createObjectURL(file);
   });
 
+/** Convert file to compressed Data URL (fallback when Cloudinary is unavailable or returns 401) */
+const fileToDataUrl = (file: File, maxSide = 800, quality = 0.85): Promise<string> =>
+  new Promise((resolve, reject) => {
+    if (file.type === "image/svg+xml") {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Failed to read SVG file"));
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxSide || height > maxSide) {
+        if (width > height) { height = Math.round((height / width) * maxSide); width = maxSide; }
+        else                { width  = Math.round((width / height) * maxSide); height = maxSide; }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject(new Error("Canvas not supported"));
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL("image/jpeg", quality);
+      URL.revokeObjectURL(img.src);
+      resolve(dataUrl);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(img.src);
+      reject(new Error("Failed to load image file"));
+    };
+    img.src = URL.createObjectURL(file);
+  });
+
 /** Upload to Cloudinary using unsigned preset — returns CDN URL */
 const uploadToCloudinary = async (
   file: File,
@@ -92,16 +129,25 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processUpload = async (file: File) => {
-    if (file.size > 5 * 1024 * 1024) { setError("File too large. Max 5MB."); return; }
+    if (file.size > 10 * 1024 * 1024) { setError("File too large. Max 10MB."); return; }
     const ok = ["image/jpeg","image/png","image/webp","image/avif","image/gif","image/svg+xml"];
     if (!ok.includes(file.type)) { setError("Only JPG, PNG, WebP, AVIF, GIF, SVG allowed."); return; }
 
-    setError(null); setUploading(true); setProgress(0);
+    setError(null); setUploading(true); setProgress(10);
     try {
+      // 1. Try Cloudinary upload first
       const url = await uploadToCloudinary(file, folderPath, setProgress);
       onChange(url);
     } catch (err: any) {
-      setError(err?.message || "Upload failed. Try again.");
+      // 2. Automatic fallback to client-side compressed Data URL if Cloudinary fails (e.g. 401 or network error)
+      try {
+        setProgress(60);
+        const dataUrl = await fileToDataUrl(file);
+        setProgress(100);
+        onChange(dataUrl);
+      } catch (fallbackErr: any) {
+        setError(fallbackErr.message || "Upload failed. Try again.");
+      }
     } finally {
       setUploading(false);
     }
