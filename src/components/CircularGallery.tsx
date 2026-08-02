@@ -289,6 +289,14 @@ class Media {
       texture.image = img;
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
     };
+    img.onerror = () => {
+      const fallbackImg = new Image();
+      fallbackImg.src = this.image;
+      fallbackImg.onload = () => {
+        texture.image = fallbackImg;
+        this.program.uniforms.uImageSizes.value = [fallbackImg.naturalWidth, fallbackImg.naturalHeight];
+      };
+    };
   }
 
   createMesh() {

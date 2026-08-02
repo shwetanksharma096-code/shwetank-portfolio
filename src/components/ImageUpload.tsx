@@ -2,10 +2,8 @@ import React, { useState, useRef } from "react";
 import { Upload, Trash2, Loader2, X } from "lucide-react";
 
 // ── Cloudinary config ──────────────────────────────────────────────────
-// These values MUST be set as Vercel environment variables.
-// Never hardcode production credentials in source code.
-const CLOUD_NAME    = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
-const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
+const CLOUD_NAME    = (import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string) || "digkpl4re";
+const UPLOAD_PRESET = (import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string) || "axuqgwb1";
 const MAX_SIDE      = 1920;   // px — full HD, sharp on any screen
 const JPEG_QUALITY  = 0.92;   // high quality
 

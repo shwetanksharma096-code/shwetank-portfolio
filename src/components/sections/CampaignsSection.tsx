@@ -39,6 +39,11 @@ function extractInstagramHandle(url: string | undefined): string {
   return m ? '@' + m[1] : '';
 }
 
+function getBrandLogoFallback(name: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F4F4F6"/><rect x="20" y="20" width="360" height="360" rx="24" fill="#FFFFFF" stroke="#111111" stroke-opacity="0.1" stroke-width="2"/><text x="200" y="200" font-family="sans-serif" font-weight="900" font-size="22" fill="#111111" text-anchor="middle" dominant-baseline="central" letter-spacing="2">${name.toUpperCase()}</text></svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
 export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, brandLogos = [] }) => {
   const [activeBrandState, setActiveBrandState] = useState<string>('');
   const [openCampaignIdx, setOpenCampaignIdx] = useState<number | null>(null);
@@ -54,7 +59,7 @@ export const CampaignsSection: React.FC<CampaignsSectionProps> = ({ campaigns, b
 
   const galleryItems = (brandLogos && brandLogos.length > 0)
     ? brandLogos.map((brand) => ({
-        image: brand.logoUrl || `https://placehold.co/400x400/F4F4F6/111111?text=${encodeURIComponent(brand.name)}`,
+        image: brand.logoUrl || getBrandLogoFallback(brand.name),
         text: brand.name.toUpperCase(),
       }))
     : [];
